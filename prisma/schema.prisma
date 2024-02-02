@@ -225,6 +225,7 @@ model Volunteers {
   availability             Int
   offersLibrasSupport      Boolean                  @map("offers_libras_support")
   street                   String?                  @db.VarChar(200)
+  matches                  Matches[]
   volunteer_availability   VolunteerAvailability?
   volunteer_status_history VolunteerStatusHistory[]
   volunteers_formdata      VolunteerFormData?       @relation(fields: [formDataId], references: [id])
@@ -249,6 +250,86 @@ model VolunteerFormData {
   @@schema("public")
 }
 
+model MatchStatusHistory {
+  matchStatusHistoryId Int         @id @default(autoincrement()) @map("match_status_history_id")
+  matchId              Int         @map("match_id")
+  status               MatchStatus
+  createdAt            DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  match                Matches     @relation(fields: [matchId], references: [matchId])
+
+  @@map("match_status_history")
+  @@schema("match")
+}
+
+model MatchSurveys {
+  matchSurveyId Int        @id @default(autoincrement()) @map("match_survey_id")
+  matchId       Int        @map("match_id")
+  createdAt     DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt     DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
+  surveyType    SurveyType @map("survey_type")
+  match         Matches    @relation(fields: [matchId], references: [matchId])
+
+  @@map("match_surveys")
+  @@schema("match")
+}
+
+model Matches {
+  matchId                  Int                  @id @default(autoincrement()) @map("match_id")
+  supportRequestId         Int                  @map("support_request_id")
+  msrId                    BigInt               @map("msr_id")
+  volunteerId              Int?                 @map("volunteer_id")
+  msrZendeskTicketId       BigInt               @map("msr_zendesk_ticket_id")
+  volunteerZendeskTicketId BigInt?              @map("volunteer_zendesk_ticket_id")
+  supportType              SupportType          @map("support_type")
+  matchType                MatchType            @map("match_type")
+  matchStage               MatchStage           @map("match_stage")
+  status                   MatchStatus
+  createdAt                DateTime             @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                DateTime             @updatedAt @map("updated_at") @db.Timestamp(6)
+  MatchStatusHistory       MatchStatusHistory[]
+  MatchSurveys             MatchSurveys[]
+  supportRequest           SupportRequests      @relation(fields: [supportRequestId], references: [supportRequestId])
+  volunteer                Volunteers?          @relation(fields: [volunteerId], references: [id])
+
+  @@map("matches")
+  @@schema("match")
+}
+
+model SupportRequestStatusHistory {
+  supportRequestStatusHistoryId Int                   @id @default(autoincrement()) @map("support_request_status_history_id")
+  supportRequestId              Int                   @map("support_request_id")
+  status                        SupportRequestsStatus
+  createdAt                     DateTime              @default(now()) @map("created_at") @db.Timestamp(6)
+  supportRequest                SupportRequests       @relation(fields: [supportRequestId], references: [supportRequestId])
+
+  @@map("support_request_status_history")
+  @@schema("match")
+}
+
+model SupportRequests {
+  supportRequestId            Int                           @id @default(autoincrement()) @map("support_request_id")
+  msrId                       BigInt                        @map("msr_id")
+  zendeskTicketId             BigInt                        @unique @map("zendesk_ticket_id")
+  supportType                 SupportType                   @map("support_type")
+  supportExpertise            String?                       @map("support_expertise")
+  priority                    Int?
+  hasDisability               Boolean?                      @map("has_disability")
+  requiresLibras              Boolean?                      @map("requires_libras")
+  acceptsOnlineSupport        Boolean                       @map("accepts_online_support")
+  lat                         Decimal?                      @db.Decimal(10, 4)
+  lng                         Decimal?                      @db.Decimal(10, 4)
+  city                        String?
+  state                       String?
+  status                      SupportRequestsStatus
+  createdAt                   DateTime                      @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                   DateTime                      @updatedAt @map("updated_at") @db.Timestamp(6)
+  Matches                     Matches[]
+  SupportRequestStatusHistory SupportRequestStatusHistory[]
+
+  @@map("support_requests")
+  @@schema("match")
+}
+
 model Cities {
   cityId    Int      @id @default(autoincrement()) @map("city_id")
   cityValue String   @map("city_value") @db.VarChar(100)
@@ -262,10 +343,75 @@ model Cities {
   @@schema("public")
 }
 
+model FeatureFlag {
+  id             BigInt  @id @default(autoincrement())
+  featureEnabled Boolean @default(false) @map("feature_enabled")
+  featureName    String  @unique @map("feature_name")
+
+  @@map("feature_flag")
+  @@schema("public")
+}
+
 enum SupportType {
   psychological
   legal
 
   @@map("support_type")
+  @@schema("match")
+}
+
+enum SupportRequestsStatus {
+  open
+  matched
+  social_assistant
+  public_service
+  duplicated
+  closed
+  special_case
+
+  @@map("support_requests_status")
+  @@schema("match")
+}
+
+enum MatchType {
+  msr
+  volunteer
+  manual
+  old
+
+  @@map("match_type")
+  @@schema("match")
+}
+
+enum MatchStage {
+  ideal
+  expanded
+  online
+  old
+  manual
+
+  @@map("match_stage")
+  @@schema("match")
+}
+
+enum MatchStatus {
+  completed
+  expired
+  in_contact
+  interrupted_after_support
+  interrupted_before_support
+  waiting_contact
+
+  @@map("match_status")
+  @@schema("match")
+}
+
+enum SurveyType {
+  triagem_1
+  triagem_2
+  acompanhamento_1
+  acompanhamento_2
+
+  @@map("survey_type")
   @@schema("match")
 }
