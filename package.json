@@ -1,0 +1,28 @@
+{
+  "name": "mapa-migrations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:start": "docker compose up -d",
+    "db:push": "prisma db push",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:diff": "prisma migrate diff",
+    "generate": "prisma generate",
+    "db:seed": "node prisma/seed.mjs",
+    "db:reset": "prisma migrate reset && npm run db:seed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "prisma": "^5.9.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.9.1"
+  }
+}
