@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["match", "public"]
 }
 
 model auth_group {
@@ -14,6 +16,7 @@ model auth_group {
   auth_user_groups       auth_user_groups[]
 
   @@index([name], map: "auth_group_name_a6ea08ec_like")
+  @@schema("public")
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -27,6 +30,7 @@ model auth_group_permissions {
   @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
   @@index([group_id], map: "auth_group_permissions_group_id_b120cbf9")
   @@index([permission_id], map: "auth_group_permissions_permission_id_84c5c92e")
+  @@schema("public")
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -41,6 +45,7 @@ model auth_permission {
 
   @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
   @@index([content_type_id], map: "auth_permission_content_type_id_2f476e4b")
+  @@schema("public")
 }
 
 model auth_user {
@@ -58,9 +63,10 @@ model auth_user {
   auth_user_groups           auth_user_groups[]
   auth_user_user_permissions auth_user_user_permissions[]
   django_admin_log           django_admin_log[]
-  volunteers_formdata        volunteers_formdata?
+  volunteers_formdata        VolunteerFormData?
 
   @@index([username], map: "auth_user_username_6821ab7c_like")
+  @@schema("public")
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -74,6 +80,7 @@ model auth_user_groups {
   @@unique([user_id, group_id], map: "auth_user_groups_user_id_group_id_94350c0c_uniq")
   @@index([group_id], map: "auth_user_groups_group_id_97559544")
   @@index([user_id], map: "auth_user_groups_user_id_6a12ed8b")
+  @@schema("public")
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -87,17 +94,7 @@ model auth_user_user_permissions {
   @@unique([user_id, permission_id], map: "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
   @@index([permission_id], map: "auth_user_user_permissions_permission_id_1fbb5f2c")
   @@index([user_id], map: "auth_user_user_permissions_user_id_a95ead1b")
-}
-
-model cities {
-  city_id    Int      @id @default(autoincrement())
-  city_value String   @db.VarChar(100)
-  city_label String   @db.VarChar(100)
-  state      String   @db.VarChar(2)
-  ibge_code  Int
-  created_at DateTime @db.Timestamptz(6)
-  updated_at DateTime @db.Timestamptz(6)
-  msrs       msrs[]
+  @@schema("public")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -116,6 +113,7 @@ model django_admin_log {
 
   @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
   @@index([user_id], map: "django_admin_log_user_id_c564eba6")
+  @@schema("public")
 }
 
 model django_content_type {
@@ -126,6 +124,7 @@ model django_content_type {
   django_admin_log django_admin_log[]
 
   @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+  @@schema("public")
 }
 
 model django_migrations {
@@ -133,6 +132,8 @@ model django_migrations {
   app     String   @db.VarChar(255)
   name    String   @db.VarChar(255)
   applied DateTime @db.Timestamptz(6)
+
+  @@schema("public")
 }
 
 model django_session {
@@ -142,154 +143,129 @@ model django_session {
 
   @@index([expire_date], map: "django_session_expire_date_a5c62663")
   @@index([session_key], map: "django_session_session_key_c0390e0f_like")
+  @@schema("public")
 }
 
-model integrations_logs {
-  id          BigInt   @id(map: "volunteers_integrationlogs_pkey") @default(autoincrement())
+model VolunteerIntegrationLogs {
+  id          BigInt   @id @default(autoincrement())
   type        String   @db.VarChar(30)
-  created_at  DateTime @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   status      String   @db.VarChar(30)
   error       String
   data        Json
   integration String   @db.VarChar(15)
-  external_id Int?
-  form_type   String   @db.VarChar(15)
-  internal_id Int?
+  externalId  Int?     @map("external_id")
+  formType    String   @map("form_type") @db.VarChar(15)
+  internalId  Int?     @map("internal_id")
+
+  @@map("volunteer_integration_logs")
+  @@schema("public")
 }
 
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model msrs {
-  id                   BigInt   @id(map: "msrs_msrs_pkey") @default(autoincrement())
-  user_zendesk_id      Int?
-  name                 String   @db.VarChar(100)
-  email                String   @db.VarChar(254)
-  cpf                  String   @db.VarChar(11)
-  color                String   @db.VarChar(15)
-  gender               String   @db.VarChar(15)
-  whatsapp             String   @db.VarChar(11)
-  state                String   @db.VarChar(2)
-  city_id              Int
-  neighborhood         String   @db.VarChar(100)
-  latitude             Decimal  @db.Decimal(10, 4)
-  logintude            Decimal  @db.Decimal(10, 4)
-  pcd                  Boolean
-  education            String   @db.VarChar(40)
-  work_situation       String   @db.VarChar(40)
-  income               Decimal  @db.Decimal(10, 2)
-  duration_of_violence String   @db.VarChar(30)
-  author_of_violence   String   @db.VarChar(30)
-  story                String
-  risk_factors         String   @db.VarChar(140)
-  protective_factors   String   @db.VarChar(100)
-  public_service       String   @db.VarChar(100)
-  type_of_support      String   @db.VarChar(20)
-  access               String   @db.VarChar(30)
-  status               String   @db.VarChar(15)
-  support_on_queue     Boolean
-  on_queue             Boolean
-  online               Boolean
-  priority             String   @db.VarChar(15)
-  created_at           DateTime @db.Timestamptz(6)
-  updated_at           DateTime @db.Timestamptz(6)
-  match                Boolean
-  digital_violence     String   @db.VarChar(200)
-  obstetric_violence   String   @db.VarChar(100)
-  physical_violence    String   @db.VarChar(100)
-  property_violence    String   @db.VarChar(100)
-  psych_violence       String   @db.VarChar(100)
-  sexual_violence      String   @db.VarChar(100)
-  cities               cities   @relation(fields: [city_id], references: [city_id], onDelete: NoAction, onUpdate: NoAction, map: "msrs_msrs_city_id_e49bad88_fk_cities_city_id")
+model VolunteerAvailability {
+  volunteerId         Int         @id @map("volunteer_id")
+  currentMatches      Int         @map("current_matches")
+  maxMatches          Int         @map("max_matches")
+  isAvailable         Boolean     @map("is_available")
+  supportType         SupportType @map("support_type")
+  supportExpertise    String      @map("support_expertise") @db.VarChar(200)
+  offersOnlineSupport Boolean     @map("offers_online_support")
+  lat                 Decimal?    @db.Decimal(10, 4)
+  lng                 Decimal?    @db.Decimal(10, 4)
+  city                String      @db.VarChar(100)
+  state               String      @db.VarChar(9)
+  offersLibrasSupport Boolean     @map("offers_libras_support")
+  createdAt           DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt           DateTime    @updatedAt @map("updated_at") @db.Timestamp(6)
+  volunteer           Volunteers  @relation(fields: [volunteerId], references: [id])
 
-  @@index([city_id], map: "msrs_msrs_city_id_e49bad88")
+  @@map("volunteer_availability")
+  @@schema("public")
 }
 
-model msrs_formdata {
-  id         BigInt   @id @default(autoincrement())
-  stage      String   @db.VarChar(20)
-  values     Json
-  created_at DateTime @db.Timestamptz(6)
-  updated_at DateTime @db.Timestamptz(6)
+model VolunteerStatusHistory {
+  id          BigInt     @id @default(autoincrement())
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  volunteerId Int        @map("volunteer_id")
+  status      String     @db.VarChar(30)
+  volunteer   Volunteers @relation(fields: [volunteerId], references: [id])
+
+  @@map("volunteer_status_history")
+  @@schema("public")
 }
 
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model volunteer_availability {
-  volunteer_id          Int        @id
-  current_matches       Int
-  max_matches           Int
-  is_available          Boolean
-  support_type          String     @db.VarChar(20)
-  support_expertise     String     @db.VarChar(200)
-  offers_online_support Boolean
-  lat                   Decimal?   @db.Decimal(10, 4)
-  lng                   Decimal?   @db.Decimal(10, 4)
-  city                  String     @db.VarChar(100)
-  created_at            DateTime   @db.Timestamptz(6)
-  updated_at            DateTime   @db.Timestamptz(6)
-  state                 String     @db.VarChar(9)
-  offers_libras_support Boolean
-  volunteers            volunteers @relation(fields: [volunteer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "volunteer_availability_volunteer_id_ff544bbb_fk_volunteers_id")
-}
-
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model volunteer_status_history {
-  id           BigInt     @id @default(autoincrement())
-  created_at   DateTime   @db.Timestamptz(6)
-  volunteer_id Int
-  status       String     @db.VarChar(30)
-  volunteers   volunteers @relation(fields: [volunteer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "volunteer_status_history_volunteer_id_d1e0ea8c_fk_volunteers_id")
-
-  @@index([volunteer_id], map: "volunteer_status_history_volunteer_id_d1e0ea8c")
-}
-
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model volunteers {
-  id                       Int                        @id(map: "volunteers_volunteer_pkey") @default(autoincrement())
-  created_at               DateTime                   @db.Timestamptz(6)
-  updated_at               DateTime                   @db.Timestamptz(6)
-  condition                String                     @db.VarChar(30)
-  first_name               String                     @db.VarChar(200)
-  last_name                String                     @db.VarChar(200)
-  email                    String                     @db.VarChar(254)
-  phone                    String                     @db.VarChar(100)
-  zipcode                  String                     @db.VarChar(9)
-  state                    String                     @db.VarChar(9)
-  city                     String                     @db.VarChar(100)
-  neighborhood             String                     @db.VarChar(100)
-  latitude                 Decimal?                   @db.Decimal(10, 4)
-  longitude                Decimal?                   @db.Decimal(10, 4)
-  register_number          String                     @db.VarChar(400)
-  birth_date               DateTime                   @db.Timestamptz(6)
-  color                    String                     @db.VarChar(100)
-  gender                   String                     @db.VarChar(100)
-  modality                 String                     @db.VarChar(100)
-  fields_of_work           String                     @db.VarChar(200)
-  years_of_experience      String                     @db.VarChar(100)
-  approach                 String?                    @db.VarChar(100)
-  form_data_id             BigInt?
-  occupation               String                     @db.VarChar(12)
-  moodle_id                Int?
-  form_entries_id          BigInt?
-  zendesk_user_id          BigInt?
+model Volunteers {
+  id                       Int                      @id @default(autoincrement())
+  createdAt                DateTime                 @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                DateTime                 @updatedAt @map("updated_at") @db.Timestamp(6)
+  condition                String                   @db.VarChar(30)
+  firstName                String                   @map("first_name") @db.VarChar(200)
+  lastName                 String                   @map("last_name") @db.VarChar(200)
+  email                    String                   @db.VarChar(254)
+  phone                    String                   @db.VarChar(100)
+  zipcode                  String                   @db.VarChar(9)
+  state                    String                   @db.VarChar(9)
+  city                     String                   @db.VarChar(100)
+  neighborhood             String                   @db.VarChar(100)
+  latitude                 Decimal?                 @db.Decimal(10, 4)
+  longitude                Decimal?                 @db.Decimal(10, 4)
+  registerNumber           String                   @map("register_number") @db.VarChar(400)
+  birthdate                DateTime                 @map("birthdate") @db.Timestamp(6)
+  color                    String                   @db.VarChar(100)
+  gender                   String                   @db.VarChar(100)
+  modality                 String                   @db.VarChar(100)
+  fieldsOfWork             String                   @map("fields_of_work") @db.VarChar(200)
+  yearsOfExperience        String                   @map("years_of_experience") @db.VarChar(100)
+  approach                 String?                  @db.VarChar(100)
+  formDataId               BigInt?                  @map("form_data_id")
+  occupation               String                   @db.VarChar(12)
+  moodleId                 Int?                     @map("moodle_id")
+  formEntriesId            BigInt?                  @map("form_entries_id")
+  zendeskUserId            BigInt?                  @map("zendesk_user_id")
   availability             Int
-  offers_libras_support    Boolean
-  street                   String?                    @db.VarChar(200)
-  volunteer_availability   volunteer_availability?
-  volunteer_status_history volunteer_status_history[]
-  volunteers_formdata      volunteers_formdata?       @relation(fields: [form_data_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "volunteers_volunteer_form_data_id_ec6c5a18_fk_volunteer")
+  offersLibrasSupport      Boolean                  @map("offers_libras_support")
+  street                   String?                  @db.VarChar(200)
+  volunteer_availability   VolunteerAvailability?
+  volunteer_status_history VolunteerStatusHistory[]
+  volunteers_formdata      VolunteerFormData?       @relation(fields: [formDataId], references: [id])
 
-  @@index([form_data_id], map: "volunteers_volunteer_form_data_id_ec6c5a18")
+  @@map("volunteers")
+  @@schema("public")
 }
 
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model volunteers_formdata {
+model VolunteerFormData {
   id          BigInt       @id @default(autoincrement())
   type_form   String       @db.VarChar(10)
   step        Int
   values      Json
   user_id     Int          @unique
-  created_at  DateTime     @db.Timestamptz(6)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
   total_steps Int
-  updated_at  DateTime     @db.Timestamptz(6)
-  volunteers  volunteers[]
-  auth_user   auth_user    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "volunteers_formdata_user_id_c9262138_fk_auth_user_id")
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamp(6)
+  volunteers  Volunteers[]
+  auth_user   auth_user    @relation(fields: [user_id], references: [id])
+
+  @@map("volunteer_form_data")
+  @@schema("public")
+}
+
+model Cities {
+  cityId    Int      @id @default(autoincrement()) @map("city_id")
+  cityValue String   @map("city_value") @db.VarChar(100)
+  cityLabel String   @map("city_label") @db.VarChar(100)
+  state     String   @db.VarChar(2)
+  ibgeCode  Int      @map("ibge_code")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  @@map("cities")
+  @@schema("public")
+}
+
+enum SupportType {
+  psychological
+  legal
+
+  @@map("support_type")
+  @@schema("match")
 }
