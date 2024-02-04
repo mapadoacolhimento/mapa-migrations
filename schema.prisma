@@ -209,7 +209,7 @@ model Volunteers {
   neighborhood             String                   @db.VarChar(100)
   latitude                 Decimal?                 @db.Decimal(10, 4)
   longitude                Decimal?                 @db.Decimal(10, 4)
-  registerNumber           String                   @map("register_number") @db.VarChar(400)
+  registrationNumber       String                   @map("register_number") @db.VarChar(400)
   birthdate                DateTime                 @map("birthdate") @db.Timestamp(6)
   color                    String                   @db.VarChar(100)
   gender                   String                   @db.VarChar(100)
