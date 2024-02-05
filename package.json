@@ -10,7 +10,8 @@
     "migrate:dev": "prisma migrate dev",
     "generate": "prisma generate",
     "db:seed": "node seed.mjs",
-    "db:reset": "prisma migrate reset && npm run db:seed"
+    "db:reset": "prisma migrate reset && npm run db:seed",
+    "migrate:diff": "prisma migrate diff"
   },
   "keywords": [],
   "author": "",
