@@ -7,15 +7,15 @@ concurrency:
 on:
   pull_request:
     branches:
-      - "**"
+      - '**'
     paths:
-      - "prisma/migrations/**"
+      - 'prisma/migrations/**'
 
   push:
     branches:
-      - "main"
+      - 'main'
     paths:
-      - "prisma/migrations/**"
+      - 'prisma/migrations/**'
 
 jobs:
   deploy:
@@ -42,4 +42,4 @@ jobs:
       - name: Apply all pending migrations to the database
         run: npm run migrate:deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.BONDE_DATABASE_URL }}
