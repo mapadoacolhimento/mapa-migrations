@@ -9,13 +9,13 @@ on:
     branches:
       - '**'
     paths:
-      - 'prisma/migrations/**'
+      - 'migrations/**'
 
   push:
     branches:
       - 'main'
     paths:
-      - 'prisma/migrations/**'
+      - 'migrations/**'
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
