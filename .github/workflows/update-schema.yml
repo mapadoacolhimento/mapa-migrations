@@ -38,7 +38,9 @@ jobs:
 
       - name: Update schema file
         working-directory: lambda-pedido-acolhimento
-        run: cp -u ../schema.prisma ./prisma
+        run: |
+          rm ./prisma/schema.prisma
+          cp -u ../schema.prisma ./prisma
 
       - name: Check for changes
         working-directory: lambda-pedido-acolhimento
