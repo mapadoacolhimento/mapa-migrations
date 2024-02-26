@@ -7,15 +7,18 @@ concurrency:
 on:
   pull_request:
     branches:
-      - "**"
+      - '**'
     paths:
-      - "prisma/migrations/**"
+      - 'migrations/**'
 
   push:
     branches:
-      - "main"
+      - 'main'
     paths:
-      - "prisma/migrations/**"
+      - 'migrations/**'
+
+env:
+  LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
 
 jobs:
   deploy:
@@ -42,4 +45,4 @@ jobs:
       - name: Apply all pending migrations to the database
         run: npm run migrate:deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.BONDE_DATABASE_URL }}

@@ -1,5 +1,11 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "match";
+
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
-CREATE TABLE "auth_group" (
+CREATE TABLE "public"."auth_group" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(150) NOT NULL,
 
@@ -7,7 +13,7 @@ CREATE TABLE "auth_group" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_group_permissions" (
+CREATE TABLE "public"."auth_group_permissions" (
     "id" BIGSERIAL NOT NULL,
     "group_id" INTEGER NOT NULL,
     "permission_id" INTEGER NOT NULL,
@@ -16,7 +22,7 @@ CREATE TABLE "auth_group_permissions" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_permission" (
+CREATE TABLE "public"."auth_permission" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "content_type_id" INTEGER NOT NULL,
@@ -26,7 +32,7 @@ CREATE TABLE "auth_permission" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_user" (
+CREATE TABLE "public"."auth_user" (
     "id" SERIAL NOT NULL,
     "password" VARCHAR(128) NOT NULL,
     "last_login" TIMESTAMPTZ(6),
@@ -43,7 +49,7 @@ CREATE TABLE "auth_user" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_user_groups" (
+CREATE TABLE "public"."auth_user_groups" (
     "id" BIGSERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "group_id" INTEGER NOT NULL,
@@ -52,7 +58,7 @@ CREATE TABLE "auth_user_groups" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_user_user_permissions" (
+CREATE TABLE "public"."auth_user_user_permissions" (
     "id" BIGSERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "permission_id" INTEGER NOT NULL,
@@ -61,20 +67,36 @@ CREATE TABLE "auth_user_user_permissions" (
 );
 
 -- CreateTable
-CREATE TABLE "cities" (
-    "city_id" SERIAL NOT NULL,
-    "city_value" VARCHAR(100) NOT NULL,
-    "city_label" VARCHAR(100) NOT NULL,
-    "state" VARCHAR(2) NOT NULL,
-    "ibge_code" INTEGER NOT NULL,
+CREATE TABLE "public"."core_formdata" (
+    "id" BIGSERIAL NOT NULL,
+    "type_form" VARCHAR(10) NOT NULL,
+    "step" INTEGER NOT NULL,
+    "values" JSONB NOT NULL,
+    "user_id" INTEGER NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL,
+    "total_steps" INTEGER NOT NULL,
     "updated_at" TIMESTAMPTZ(6) NOT NULL,
 
-    CONSTRAINT "cities_pkey" PRIMARY KEY ("city_id")
+    CONSTRAINT "core_formdata_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "django_admin_log" (
+CREATE TABLE "public"."core_integrationlogs" (
+    "id" BIGSERIAL NOT NULL,
+    "type" VARCHAR(30) NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL,
+    "status" VARCHAR(30) NOT NULL,
+    "error" VARCHAR(200) NOT NULL,
+    "data" JSONB NOT NULL,
+    "form_data_id" BIGINT NOT NULL,
+    "external_data" JSONB NOT NULL,
+    "integration" VARCHAR(15) NOT NULL,
+
+    CONSTRAINT "core_integrationlogs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."django_admin_log" (
     "id" SERIAL NOT NULL,
     "action_time" TIMESTAMPTZ(6) NOT NULL,
     "object_id" TEXT,
@@ -88,7 +110,7 @@ CREATE TABLE "django_admin_log" (
 );
 
 -- CreateTable
-CREATE TABLE "django_content_type" (
+CREATE TABLE "public"."django_content_type" (
     "id" SERIAL NOT NULL,
     "app_label" VARCHAR(100) NOT NULL,
     "model" VARCHAR(100) NOT NULL,
@@ -97,7 +119,7 @@ CREATE TABLE "django_content_type" (
 );
 
 -- CreateTable
-CREATE TABLE "django_migrations" (
+CREATE TABLE "public"."django_migrations" (
     "id" BIGSERIAL NOT NULL,
     "app" VARCHAR(255) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -107,7 +129,7 @@ CREATE TABLE "django_migrations" (
 );
 
 -- CreateTable
-CREATE TABLE "django_session" (
+CREATE TABLE "public"."django_session" (
     "session_key" VARCHAR(40) NOT NULL,
     "session_data" TEXT NOT NULL,
     "expire_date" TIMESTAMPTZ(6) NOT NULL,
@@ -116,12 +138,12 @@ CREATE TABLE "django_session" (
 );
 
 -- CreateTable
-CREATE TABLE "integrations_logs" (
+CREATE TABLE "public"."integrations_logs" (
     "id" BIGSERIAL NOT NULL,
     "type" VARCHAR(30) NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL,
     "status" VARCHAR(30) NOT NULL,
-    "error" TEXT NOT NULL,
+    "error" VARCHAR(200) NOT NULL,
     "data" JSONB NOT NULL,
     "integration" VARCHAR(15) NOT NULL,
     "external_id" INTEGER,
@@ -132,7 +154,18 @@ CREATE TABLE "integrations_logs" (
 );
 
 -- CreateTable
-CREATE TABLE "msrs" (
+CREATE TABLE "public"."msrs_formdata" (
+    "id" BIGSERIAL NOT NULL,
+    "stage" VARCHAR(20) NOT NULL,
+    "values" JSONB NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "msrs_formdata_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."msrs_msrs" (
     "id" BIGSERIAL NOT NULL,
     "user_zendesk_id" INTEGER,
     "name" VARCHAR(100) NOT NULL,
@@ -142,7 +175,7 @@ CREATE TABLE "msrs" (
     "gender" VARCHAR(15) NOT NULL,
     "whatsapp" VARCHAR(11) NOT NULL,
     "state" VARCHAR(2) NOT NULL,
-    "city_id" INTEGER NOT NULL,
+    "city" VARCHAR(100) NOT NULL,
     "neighborhood" VARCHAR(100) NOT NULL,
     "latitude" DECIMAL(10,4) NOT NULL,
     "logintude" DECIMAL(10,4) NOT NULL,
@@ -177,84 +210,106 @@ CREATE TABLE "msrs" (
 );
 
 -- CreateTable
-CREATE TABLE "msrs_formdata" (
-    "id" BIGSERIAL NOT NULL,
-    "stage" VARCHAR(20) NOT NULL,
-    "values" JSONB NOT NULL,
-    "created_at" TIMESTAMPTZ(6) NOT NULL,
-    "updated_at" TIMESTAMPTZ(6) NOT NULL,
-
-    CONSTRAINT "msrs_formdata_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "volunteer_availability" (
-    "volunteer_id" INTEGER NOT NULL,
-    "current_matches" INTEGER NOT NULL,
-    "max_matches" INTEGER NOT NULL,
-    "is_available" BOOLEAN NOT NULL,
-    "support_type" VARCHAR(20) NOT NULL,
-    "support_expertise" VARCHAR(200) NOT NULL,
-    "offers_online_support" BOOLEAN NOT NULL,
-    "lat" DECIMAL(10,4),
-    "lng" DECIMAL(10,4),
-    "city" VARCHAR(100) NOT NULL,
-    "created_at" TIMESTAMPTZ(6) NOT NULL,
-    "updated_at" TIMESTAMPTZ(6) NOT NULL,
-    "state" VARCHAR(9) NOT NULL,
-    "offers_libras_support" BOOLEAN NOT NULL,
-
-    CONSTRAINT "volunteer_availability_pkey" PRIMARY KEY ("volunteer_id")
-);
-
--- CreateTable
-CREATE TABLE "volunteer_status_history" (
-    "id" BIGSERIAL NOT NULL,
-    "created_at" TIMESTAMPTZ(6) NOT NULL,
-    "volunteer_id" INTEGER NOT NULL,
-    "status" VARCHAR(30) NOT NULL,
-
-    CONSTRAINT "volunteer_status_history_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "volunteers" (
+CREATE TABLE "public"."solidarity_users" (
     "id" SERIAL NOT NULL,
+    "user_id" BIGINT NOT NULL,
+    "url" TEXT,
+    "name" TEXT,
+    "email" TEXT,
+    "created_at" TIMESTAMP(6),
+    "updated_at" TIMESTAMP(6),
+    "time_zone" TEXT,
+    "iana_time_zone" TEXT,
+    "phone" TEXT,
+    "shared_phone_number" BOOLEAN,
+    "photo" JSONB,
+    "locale_id" BIGINT,
+    "locale" TEXT,
+    "organization_id" BIGINT,
+    "role" TEXT,
+    "verified" BOOLEAN,
+    "external_id" BIGINT,
+    "tags" JSONB,
+    "alias" TEXT,
+    "active" BOOLEAN,
+    "shared" BOOLEAN,
+    "shared_agent" BOOLEAN,
+    "last_login_at" TIMESTAMP(6),
+    "two_factor_auth_enabled" BOOLEAN,
+    "signature" TEXT,
+    "details" TEXT,
+    "notes" TEXT,
+    "role_type" BIGINT,
+    "custom_role_id" BIGINT,
+    "moderator" BOOLEAN,
+    "ticket_restriction" TEXT,
+    "only_private_comments" BOOLEAN,
+    "restricted_agent" BOOLEAN,
+    "suspended" BOOLEAN,
+    "chat_only" BOOLEAN,
+    "default_group_id" BIGINT,
+    "report_csv" BOOLEAN,
+    "user_fields" JSONB,
+    "address" TEXT,
+    "atendimentos_concludos_calculado_" BIGINT,
+    "atendimentos_concluidos" BIGINT,
+    "atendimentos_em_andamento" BIGINT,
+    "atendimentos_em_andamento_calculado_" BIGINT,
+    "cep" TEXT,
+    "city" TEXT,
+    "condition" TEXT,
+    "cor" TEXT,
+    "data_de_inscricao_no_bonde" TIMESTAMP(6),
+    "disponibilidade_de_atendimentos" TEXT,
+    "encaminhamentos" BIGINT,
+    "encaminhamentos_realizados_calculado_" BIGINT,
+    "latitude" TEXT,
+    "longitude" TEXT,
+    "occupation_area" TEXT,
+    "registration_number" TEXT,
+    "state" TEXT,
+    "tipo_de_acolhimento" TEXT,
+    "ultima_atualizacao_de_dados" TIMESTAMP(6),
+    "whatsapp" TEXT,
+    "permanently_deleted" BOOLEAN,
+
+    CONSTRAINT "solidarity_users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."volunteers" (
+    "id" INTEGER NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL,
     "updated_at" TIMESTAMPTZ(6) NOT NULL,
     "condition" VARCHAR(30) NOT NULL,
     "first_name" VARCHAR(200) NOT NULL,
     "last_name" VARCHAR(200) NOT NULL,
     "email" VARCHAR(254) NOT NULL,
-    "phone" VARCHAR(100) NOT NULL,
+    "phone" VARCHAR(11) NOT NULL,
+    "whatsapp" VARCHAR(11) NOT NULL,
     "zipcode" VARCHAR(9) NOT NULL,
-    "state" VARCHAR(9) NOT NULL,
+    "state" VARCHAR(2) NOT NULL,
     "city" VARCHAR(100) NOT NULL,
     "neighborhood" VARCHAR(100) NOT NULL,
     "latitude" DECIMAL(10,4),
-    "longitude" DECIMAL(10,4),
-    "register_number" VARCHAR(400) NOT NULL,
+    "logintude" DECIMAL(10,4),
+    "register_number" VARCHAR(11) NOT NULL,
     "birth_date" TIMESTAMPTZ(6) NOT NULL,
     "color" VARCHAR(100) NOT NULL,
     "gender" VARCHAR(100) NOT NULL,
     "modality" VARCHAR(100) NOT NULL,
     "fields_of_work" VARCHAR(200) NOT NULL,
     "years_of_experience" VARCHAR(100) NOT NULL,
+    "aviability" VARCHAR(100) NOT NULL,
     "approach" VARCHAR(100),
     "form_data_id" BIGINT,
-    "occupation" VARCHAR(12) NOT NULL,
-    "moodle_id" INTEGER,
-    "form_entries_id" BIGINT,
-    "zendesk_user_id" BIGINT,
-    "availability" INTEGER NOT NULL,
-    "offers_libras_support" BOOLEAN NOT NULL,
-    "street" VARCHAR(200),
+    "ocuppation" VARCHAR(10) NOT NULL,
 
     CONSTRAINT "volunteers_volunteer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "volunteers_formdata" (
+CREATE TABLE "public"."volunteers_formdata" (
     "id" BIGSERIAL NOT NULL,
     "type_form" VARCHAR(10) NOT NULL,
     "step" INTEGER NOT NULL,
@@ -268,116 +323,116 @@ CREATE TABLE "volunteers_formdata" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_group_name_key" ON "auth_group"("name");
+CREATE UNIQUE INDEX "auth_group_name_key" ON "public"."auth_group"("name");
 
 -- CreateIndex
-CREATE INDEX "auth_group_name_a6ea08ec_like" ON "auth_group"("name");
+CREATE INDEX "auth_group_name_a6ea08ec_like" ON "public"."auth_group"("name");
 
 -- CreateIndex
-CREATE INDEX "auth_group_permissions_group_id_b120cbf9" ON "auth_group_permissions"("group_id");
+CREATE INDEX "auth_group_permissions_group_id_b120cbf9" ON "public"."auth_group_permissions"("group_id");
 
 -- CreateIndex
-CREATE INDEX "auth_group_permissions_permission_id_84c5c92e" ON "auth_group_permissions"("permission_id");
+CREATE INDEX "auth_group_permissions_permission_id_84c5c92e" ON "public"."auth_group_permissions"("permission_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_group_permissions_group_id_permission_id_0cd325b0_uniq" ON "auth_group_permissions"("group_id", "permission_id");
+CREATE UNIQUE INDEX "auth_group_permissions_group_id_permission_id_0cd325b0_uniq" ON "public"."auth_group_permissions"("group_id", "permission_id");
 
 -- CreateIndex
-CREATE INDEX "auth_permission_content_type_id_2f476e4b" ON "auth_permission"("content_type_id");
+CREATE INDEX "auth_permission_content_type_id_2f476e4b" ON "public"."auth_permission"("content_type_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_permission_content_type_id_codename_01ab375a_uniq" ON "auth_permission"("content_type_id", "codename");
+CREATE UNIQUE INDEX "auth_permission_content_type_id_codename_01ab375a_uniq" ON "public"."auth_permission"("content_type_id", "codename");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_user_username_key" ON "auth_user"("username");
+CREATE UNIQUE INDEX "auth_user_username_key" ON "public"."auth_user"("username");
 
 -- CreateIndex
-CREATE INDEX "auth_user_username_6821ab7c_like" ON "auth_user"("username");
+CREATE INDEX "auth_user_username_6821ab7c_like" ON "public"."auth_user"("username");
 
 -- CreateIndex
-CREATE INDEX "auth_user_groups_group_id_97559544" ON "auth_user_groups"("group_id");
+CREATE INDEX "auth_user_groups_group_id_97559544" ON "public"."auth_user_groups"("group_id");
 
 -- CreateIndex
-CREATE INDEX "auth_user_groups_user_id_6a12ed8b" ON "auth_user_groups"("user_id");
+CREATE INDEX "auth_user_groups_user_id_6a12ed8b" ON "public"."auth_user_groups"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_user_groups_user_id_group_id_94350c0c_uniq" ON "auth_user_groups"("user_id", "group_id");
+CREATE UNIQUE INDEX "auth_user_groups_user_id_group_id_94350c0c_uniq" ON "public"."auth_user_groups"("user_id", "group_id");
 
 -- CreateIndex
-CREATE INDEX "auth_user_user_permissions_permission_id_1fbb5f2c" ON "auth_user_user_permissions"("permission_id");
+CREATE INDEX "auth_user_user_permissions_permission_id_1fbb5f2c" ON "public"."auth_user_user_permissions"("permission_id");
 
 -- CreateIndex
-CREATE INDEX "auth_user_user_permissions_user_id_a95ead1b" ON "auth_user_user_permissions"("user_id");
+CREATE INDEX "auth_user_user_permissions_user_id_a95ead1b" ON "public"."auth_user_user_permissions"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq" ON "auth_user_user_permissions"("user_id", "permission_id");
+CREATE UNIQUE INDEX "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq" ON "public"."auth_user_user_permissions"("user_id", "permission_id");
 
 -- CreateIndex
-CREATE INDEX "django_admin_log_content_type_id_c4bce8eb" ON "django_admin_log"("content_type_id");
+CREATE UNIQUE INDEX "core_formdata_user_id_key" ON "public"."core_formdata"("user_id");
 
 -- CreateIndex
-CREATE INDEX "django_admin_log_user_id_c564eba6" ON "django_admin_log"("user_id");
+CREATE INDEX "core_integrationlogs_form_data_id_3bdb0c69" ON "public"."core_integrationlogs"("form_data_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "django_content_type_app_label_model_76bd3d3b_uniq" ON "django_content_type"("app_label", "model");
+CREATE INDEX "django_admin_log_content_type_id_c4bce8eb" ON "public"."django_admin_log"("content_type_id");
 
 -- CreateIndex
-CREATE INDEX "django_session_expire_date_a5c62663" ON "django_session"("expire_date");
+CREATE INDEX "django_admin_log_user_id_c564eba6" ON "public"."django_admin_log"("user_id");
 
 -- CreateIndex
-CREATE INDEX "django_session_session_key_c0390e0f_like" ON "django_session"("session_key");
+CREATE UNIQUE INDEX "django_content_type_app_label_model_76bd3d3b_uniq" ON "public"."django_content_type"("app_label", "model");
 
 -- CreateIndex
-CREATE INDEX "msrs_msrs_city_id_e49bad88" ON "msrs"("city_id");
+CREATE INDEX "django_session_expire_date_a5c62663" ON "public"."django_session"("expire_date");
 
 -- CreateIndex
-CREATE INDEX "volunteer_status_history_volunteer_id_d1e0ea8c" ON "volunteer_status_history"("volunteer_id");
+CREATE INDEX "django_session_session_key_c0390e0f_like" ON "public"."django_session"("session_key");
 
 -- CreateIndex
-CREATE INDEX "volunteers_volunteer_form_data_id_ec6c5a18" ON "volunteers"("form_data_id");
+CREATE UNIQUE INDEX "solidarity_users_user_id_key" ON "public"."solidarity_users"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "volunteers_formdata_user_id_key" ON "volunteers_formdata"("user_id");
+CREATE INDEX "volunteers_volunteer_form_data_id_ec6c5a18" ON "public"."volunteers"("form_data_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "volunteers_formdata_user_id_key" ON "public"."volunteers_formdata"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "auth_group_permissions" ADD CONSTRAINT "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm" FOREIGN KEY ("permission_id") REFERENCES "auth_permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_group_permissions" ADD CONSTRAINT "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm" FOREIGN KEY ("permission_id") REFERENCES "public"."auth_permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_group_permissions" ADD CONSTRAINT "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id" FOREIGN KEY ("group_id") REFERENCES "auth_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_group_permissions" ADD CONSTRAINT "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id" FOREIGN KEY ("group_id") REFERENCES "public"."auth_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_permission" ADD CONSTRAINT "auth_permission_content_type_id_2f476e4b_fk_django_co" FOREIGN KEY ("content_type_id") REFERENCES "django_content_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_permission" ADD CONSTRAINT "auth_permission_content_type_id_2f476e4b_fk_django_co" FOREIGN KEY ("content_type_id") REFERENCES "public"."django_content_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_user_groups" ADD CONSTRAINT "auth_user_groups_group_id_97559544_fk_auth_group_id" FOREIGN KEY ("group_id") REFERENCES "auth_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_user_groups" ADD CONSTRAINT "auth_user_groups_group_id_97559544_fk_auth_group_id" FOREIGN KEY ("group_id") REFERENCES "public"."auth_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_user_groups" ADD CONSTRAINT "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_user_groups" ADD CONSTRAINT "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm" FOREIGN KEY ("permission_id") REFERENCES "auth_permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm" FOREIGN KEY ("permission_id") REFERENCES "public"."auth_permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "django_admin_log" ADD CONSTRAINT "django_admin_log_content_type_id_c4bce8eb_fk_django_co" FOREIGN KEY ("content_type_id") REFERENCES "django_content_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."core_formdata" ADD CONSTRAINT "core_formdata_user_id_3a7f140c_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "django_admin_log" ADD CONSTRAINT "django_admin_log_user_id_c564eba6_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."core_integrationlogs" ADD CONSTRAINT "core_integrationlogs_form_data_id_3bdb0c69_fk_core_formdata_id" FOREIGN KEY ("form_data_id") REFERENCES "public"."core_formdata"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "msrs" ADD CONSTRAINT "msrs_msrs_city_id_e49bad88_fk_cities_city_id" FOREIGN KEY ("city_id") REFERENCES "cities"("city_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."django_admin_log" ADD CONSTRAINT "django_admin_log_content_type_id_c4bce8eb_fk_django_co" FOREIGN KEY ("content_type_id") REFERENCES "public"."django_content_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "volunteer_availability" ADD CONSTRAINT "volunteer_availability_volunteer_id_ff544bbb_fk_volunteers_id" FOREIGN KEY ("volunteer_id") REFERENCES "volunteers"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."django_admin_log" ADD CONSTRAINT "django_admin_log_user_id_c564eba6_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "volunteer_status_history" ADD CONSTRAINT "volunteer_status_history_volunteer_id_d1e0ea8c_fk_volunteers_id" FOREIGN KEY ("volunteer_id") REFERENCES "volunteers"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."volunteers" ADD CONSTRAINT "volunteers_volunteer_form_data_id_ec6c5a18_fk_volunteer" FOREIGN KEY ("form_data_id") REFERENCES "public"."volunteers_formdata"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "volunteers" ADD CONSTRAINT "volunteers_volunteer_form_data_id_ec6c5a18_fk_volunteer" FOREIGN KEY ("form_data_id") REFERENCES "volunteers_formdata"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE "volunteers_formdata" ADD CONSTRAINT "volunteers_formdata_user_id_c9262138_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."volunteers_formdata" ADD CONSTRAINT "volunteers_formdata_user_id_c9262138_fk_auth_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
