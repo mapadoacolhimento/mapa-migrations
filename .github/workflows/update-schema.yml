@@ -23,7 +23,7 @@ on:
       - 'schema.prisma'
 
 jobs:
-  pull-file:
+  update-schema:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
@@ -32,6 +32,7 @@ jobs:
       - name: Checkout lambda-pedido-acolhimento
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           repository: 'mapadoacolhimento/lambda-pedido-acolhimento'
           ref: 'main'
           path: 'lambda-pedido-acolhimento'
@@ -45,7 +46,6 @@ jobs:
       - name: Check for changes
         working-directory: lambda-pedido-acolhimento
         run: |
-          git status
           if git diff --quiet; then
             echo "No changes detected. Exiting."
             echo "exiting=true" >> $GITHUB_ENV
@@ -57,10 +57,13 @@ jobs:
         run: |
           git config user.name "$USERNAME"
           git config user.email "$USERNAME@$ADDRESS_SUFFIX"
+          git checkout feat/use-remote-prisma-ref
           git add prisma/schema.prisma
           git commit -m "feat: updated schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations."
 
-      # - name: Push
-      #   if: env.exiting != 'true'
-      #   working-directory: lambda-pedido-acolhimento
-      #   run: git push origin main
+      - name: Push
+        if: env.exiting != 'true'
+        working-directory: lambda-pedido-acolhimento
+        run: |
+          git checkout feat/use-remote-prisma-ref
+          git push -u origin feat/use-remote-prisma-ref
