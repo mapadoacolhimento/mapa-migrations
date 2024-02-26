@@ -36,6 +36,7 @@ jobs:
           repository: 'mapadoacolhimento/lambda-pedido-acolhimento'
           ref: 'main'
           path: 'lambda-pedido-acolhimento'
+          token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
 
       - name: Update schema file
         working-directory: lambda-pedido-acolhimento
