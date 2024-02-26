@@ -1,4 +1,4 @@
-name: Deploy new "schema.prisma" to other repos
+name: Deploy new schema to other repos
 
 env:
   USERNAME: ${{ github.actor }}
