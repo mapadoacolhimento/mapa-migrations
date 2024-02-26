@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -11,32 +11,32 @@ async function main() {
 
   const therapistVolunteer = await prisma.volunteers.create({
     data: {
-      condition: "disponivel",
-      firstName: "Teste Psi",
-      last_name: "Local",
-      email: "dev.psi.mapa@gmail.com",
-      phone: "11911991199",
-      zipcode: "01303020",
-      state: "SP",
-      city: "SAO PAULO",
-      neighborhood: "Centro",
+      condition: 'disponivel',
+      firstName: 'Teste Psi',
+      last_name: 'Local',
+      email: 'dev.psi.mapa@gmail.com',
+      phone: '11911991199',
+      zipcode: '01303020',
+      state: 'SP',
+      city: 'SAO PAULO',
+      neighborhood: 'Centro',
       latitude: -23.55242,
       longitude: -46.65735,
-      registrationNumber: "123123123",
-      birth_date: new Date("1999-01-02"),
-      color: "black",
-      gender: "cis_female",
-      modality: "not_found",
-      fields_of_work: "not_found",
-      years_of_experience: "5_ou_mais",
-      approach: "not_found",
-      occupation: "psychologist",
+      registrationNumber: '123123123',
+      birth_date: new Date('1999-01-02'),
+      color: 'black',
+      gender: 'cis_female',
+      modality: 'not_found',
+      fields_of_work: 'not_found',
+      years_of_experience: '5_ou_mais',
+      approach: 'not_found',
+      occupation: 'psychologist',
       moodle_id: null,
       form_entries_id: null,
       zendeskUserId: THERAPIST_ZENDESK_USER_ID,
       availability: 3,
       offers_libras_support: true,
-      street: "Rua da Consolação",
+      street: 'Rua da Consolação',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
@@ -48,13 +48,13 @@ async function main() {
         current_matches: 0,
         max_matches: 3,
         is_available: true,
-        support_type: "psychological",
-        support_expertise: "not_found",
+        support_type: 'psychological',
+        support_expertise: 'not_found',
         offers_online_support: true,
         lat: -23.55242,
         lng: -46.65735,
-        city: "SAO PAULO",
-        state: "SP",
+        city: 'SAO PAULO',
+        state: 'SP',
         offers_libras_support: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -62,56 +62,55 @@ async function main() {
     });
   const lawyerVolunteer = await prisma.volunteers.create({
     data: {
-      condition: "disponivel",
-      firstName: "Teste Advogada",
-      last_name: "Local",
-      email: "dev.adv.mapa@gmail.com",
-      phone: "11911991199",
-      zipcode: "01303020",
-      state: "SP",
-      city: "SAO PAULO",
-      neighborhood: "Centro",
+      condition: 'disponivel',
+      firstName: 'Teste Advogada',
+      last_name: 'Local',
+      email: 'dev.adv.mapa@gmail.com',
+      phone: '11911991199',
+      zipcode: '01303020',
+      state: 'SP',
+      city: 'SAO PAULO',
+      neighborhood: 'Centro',
       latitude: -23.55242,
       longitude: -46.65735,
-      registrationNumber: "123123123",
-      birth_date: new Date("1999-01-02"),
-      color: "black",
-      gender: "cis_female",
-      modality: "not_found",
-      fields_of_work: "not_found",
-      years_of_experience: "5_ou_mais",
-      approach: "not_found",
-      occupation: "lawyer",
+      registrationNumber: '123123123',
+      birth_date: new Date('1999-01-02'),
+      color: 'black',
+      gender: 'cis_female',
+      modality: 'not_found',
+      fields_of_work: 'not_found',
+      years_of_experience: '5_ou_mais',
+      approach: 'not_found',
+      occupation: 'lawyer',
       moodle_id: null,
       form_entries_id: null,
       zendeskUserId: LAWYER_ZENDESK_USER_ID,
       availability: 3,
       offers_libras_support: true,
-      street: "Rua da Consolação",
+      street: 'Rua da Consolação',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
   });
-  const lawyerVolunteerAvailability = await prisma.volunteerAvailability.create(
-    {
+  const lawyerVolunteerAvailability =
+    await prisma.volunteerAvailability.create({
       data: {
         volunteer_id: lawyerVolunteer.id,
         current_matches: 0,
         max_matches: 3,
         is_available: true,
-        support_type: "legal",
-        support_expertise: "not_found",
+        support_type: 'legal',
+        support_expertise: 'not_found',
         offers_online_support: true,
         lat: -23.55242,
         lng: -46.65735,
-        city: "SAO PAULO",
-        state: "SP",
+        city: 'SAO PAULO',
+        state: 'SP',
         offers_libras_support: true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       },
-    }
-  );
+    });
 
   // use these payloads to send a support req to /compose endpoint
   // const psychologicalSupportRequest = await prisma.supportRequests.create({
@@ -150,18 +149,24 @@ async function main() {
   //   },
   // });
 
-  const newMatchFeatureFlag = await prisma.featureFlag.create({
-    data: {
-      featureName: "NEW_MATCH",
-      featureEnabled: true,
-    },
+  const newMatchFeatureFlag = await prisma.featureFlag.createMany({
+    data: [
+      {
+        featureName: 'NEW_MATCH',
+        featureEnabled: true,
+      },
+      {
+        featureName: 'SOCIAL_WORKER',
+        featureEnabled: true,
+      },
+    ],
   });
 
   const city = await prisma.cities.create({
     data: {
-      city_value: "SAO PAULO",
-      city_label: "SÃO PAULO",
-      state: "SP",
+      city_value: 'SAO PAULO',
+      city_label: 'SÃO PAULO',
+      state: 'SP',
       ibge_code: 123,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
