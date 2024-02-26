@@ -11,6 +11,11 @@ concurrency:
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'schema.prisma'
   push:
     branches:
       - 'main'
