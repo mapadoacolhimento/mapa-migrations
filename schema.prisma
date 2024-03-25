@@ -365,7 +365,7 @@ model VolunteerSegments {
   segment_name String @db.VarChar(100)
   volunteer_id Int
   volunteer_segment_group String @db.VarChar(100)
-  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  created_at   DateTime   @default(now()) @db.Timestamp(6)
     updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
 
   volunteers   Volunteers @relation(fields: [volunteer_id], references: [id])
