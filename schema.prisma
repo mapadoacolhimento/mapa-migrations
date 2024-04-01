@@ -474,10 +474,15 @@ model Mutipliers {
   age                                 Int
   region                              Region
   state                               String                               @db.VarChar(9)
+  city                                String                               @db.VarChar(100) @default("not_found")
+  householdType                       MultiplierHouseholdType              @default(not_found) @map("household_type")
+  hasChildren                         Boolean?                             @map("has_children")
+  howManyChildren                     Int?                                 @map("how_many_children")
   race                                Race
   sexuality                           Sexuality
   religion                            Religion
   hasDisability                       Boolean                              @map("has_disability")
+  disabilityType                      String[]                             @map("disability_type") @default([])
   hasInternetAccess                   Boolean                              @map("has_internet_access")
   isAvailable                         Boolean                              @map("is_available")
   shiftAvailability                   String[]                             @map("shift_availability")
@@ -663,6 +668,15 @@ enum MultiplierUniversityType {
   not_found
 
   @@map("multiplier_university_type")
+  @@schema("mobilization")
+}
+
+enum MultiplierHouseholdType {
+  urban
+  rural
+  not_found
+
+  @@map("multiplier_household_type")
   @@schema("mobilization")
 }
 
