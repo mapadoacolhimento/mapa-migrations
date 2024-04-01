@@ -527,6 +527,17 @@ model MultiplierRegistrationOpenQuestions {
   @@schema("mobilization")
 }
 
+model MultiplierJourneyEvents {
+  multiplier_journey_event_id       Int         @id @default(autoincrement()) @map("multiplier_journey_event_id")
+  multiplier_id                     Int 
+  event                             MultiplierJourneyEvent
+  created_at                        DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@map("multiplier_journey_events")
+  @@schema("mobilization")
+
+}
+
 enum SupportType {
   psychological
   legal
@@ -677,6 +688,14 @@ enum MultiplierHouseholdType {
   not_found
 
   @@map("multiplier_household_type")
+  @@schema("mobilization")
+}
+
+enum MultiplierJourneyEvent {
+  registration
+  general_onboarding
+
+  @@map("multiplier_journey_event")
   @@schema("mobilization")
 }
 
