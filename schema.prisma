@@ -493,6 +493,7 @@ model Mutipliers {
   updatedAt                           DateTime                             @updatedAt @map("updated_at") @db.Timestamp(6)
   multiplierPii                       MutiplierPii?
   multiplierRegistrationOpenQuestions MultiplierRegistrationOpenQuestions?
+  multiplierJourneyEvents             MultiplierJourneyEvents[]
 
   @@map("multipliers")
   @@schema("mobilization")
@@ -521,17 +522,19 @@ model MultiplierRegistrationOpenQuestions {
   universityCourse                          String     @map("university_course") @db.VarChar(200)
   howSheHeardAboutUs                        String     @map("how_she_heard_about_us") @db.Text
   reasonsForParticipating                   String     @map("reasons_for_participating") @db.Text
-  multupliers                               Mutipliers @relation(fields: [multiplierId], references: [multiplierId])
+  multipliers                               Mutipliers @relation(fields: [multiplierId], references: [multiplierId])
 
   @@map("multiplier_registration_open_questions")
   @@schema("mobilization")
 }
 
 model MultiplierJourneyEvents {
-  multiplier_journey_event_id       Int         @id @default(autoincrement()) @map("multiplier_journey_event_id")
-  multiplier_id                     Int 
-  event                             MultiplierJourneyEvent
-  created_at                        DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  multiplierJourneyEventId          Int                     @id @default(autoincrement()) @map("multiplier_journey_event_id")
+  multiplierId                      Int                     @map("multiplier_id")
+  event                             MultiplierJourneyEvent  
+  createdAt                         DateTime                @default(now()) @map("created_at") @db.Timestamp(6)
+
+  multipliers                       Mutipliers             @relation(fields: [multiplierId], references: [multiplierId])
 
   @@map("multiplier_journey_events")
   @@schema("mobilization")
