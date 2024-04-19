@@ -13,7 +13,7 @@ async function main() {
     data: {
       condition: 'disponivel',
       firstName: 'Teste Psi',
-      last_name: 'Local',
+      lastName: 'Local',
       email: 'dev.psi.mapa@gmail.com',
       phone: '11911991199',
       zipcode: '01303020',
@@ -64,7 +64,7 @@ async function main() {
     data: {
       condition: 'disponivel',
       firstName: 'Teste Advogada',
-      last_name: 'Local',
+      lastName: 'Local',
       email: 'dev.adv.mapa@gmail.com',
       phone: '11911991199',
       zipcode: '01303020',
