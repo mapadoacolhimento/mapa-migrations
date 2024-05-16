@@ -541,7 +541,7 @@ model MultiplierJourneyEvents {
 
 model PublicServices {
   publicServiceId Int               @id @default(autoincrement()) @map("public_service_id")
-  serviceType     String            @db.VarChar(400)
+  serviceType     String            @db.VarChar(400) @map("service_type")
   serviceName     String            @map("service_name") @db.VarChar(400)
   zipcode         String            @db.VarChar(9)
   address         String            @db.VarChar(400)
