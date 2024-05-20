@@ -3,17 +3,17 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // const MSR_ZENDESK_USER_ID = 401191540912;
+  // const MSR_ZENDESK_USER_ID = 22858077211028;
   const THERAPIST_ZENDESK_USER_ID = 417544904932;
   const LAWYER_ZENDESK_USER_ID = 423092711812;
-  // const PSYCHOLOGICAL_ZENDESK_TICKET_ID = 25774;
-  // const LEGAL_ZENDESK_TICKET_ID = 25776;
+  // const PSYCHOLOGICAL_ZENDESK_TICKET_ID = 82261;
+  // const LEGAL_ZENDESK_TICKET_ID = 82262;
 
   const therapistVolunteer = await prisma.volunteers.create({
     data: {
       condition: 'disponivel',
       firstName: 'Teste Psi',
-      last_name: 'Local',
+      lastName: 'Local',
       email: 'dev.psi.mapa@gmail.com',
       phone: '11911991199',
       zipcode: '01303020',
@@ -64,7 +64,7 @@ async function main() {
     data: {
       condition: 'disponivel',
       firstName: 'Teste Advogada',
-      last_name: 'Local',
+      lastName: 'Local',
       email: 'dev.adv.mapa@gmail.com',
       phone: '11911991199',
       zipcode: '01303020',
