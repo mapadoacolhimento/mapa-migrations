@@ -19,9 +19,10 @@ on:
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
+  STAGE: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
 
 jobs:
-  deploy:
+  deploy-bonde:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
@@ -45,4 +46,4 @@ jobs:
       - name: Apply all pending migrations to the database
         run: npm run migrate:deploy
         env:
-          DATABASE_URL: ${{ secrets.BONDE_DATABASE_URL }}
+          DATABASE_URL: "${{ env.STAGE == 'production' && secrets.PROD_BONDE_DATABASE_URL || secrets.STG_BONDE_DATABASE_URL }}"
