@@ -23,7 +23,7 @@ env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
 
 jobs:
-  deploy:
+  deploy-mapa:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
@@ -47,4 +47,30 @@ jobs:
       - name: Apply all pending migrations to the database
         run: npm run migrate:deploy
         env:
-          DATABASE_URL: ${{ secrets.BONDE_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  deploy-bonde:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply all pending migrations to the database
+        run: npm run migrate:deploy
+        env:
+          DATABASE_URL: "${{ github.ref == 'refs/heads/main' && secrets.PROD_BONDE_DATABASE_URL || secrets.STG_BONDE_DATABASE_URL }}"
