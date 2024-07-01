@@ -230,7 +230,7 @@ model MSRs {
   neighborhood  String   @db.VarChar(100)
   city          String   @db.VarChar(100)
   state         String   @db.VarChar(9)
-  status        String   @db.VarChar(100)
+  status        MSRStatus
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
 
@@ -567,6 +567,14 @@ enum SupportType {
 
   @@map("support_type")
   @@schema("match")
+}
+
+enum MSRStatus {
+  registered
+  unsubscribed
+
+  @@map("msr_status")
+  @@schema("msr")
 }
 
 enum SupportRequestsStatus {
