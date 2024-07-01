@@ -162,16 +162,6 @@ model integrations_logs {
   @@schema("public")
 }
 
-model msrs_formdata {
-  id         BigInt   @id @default(autoincrement())
-  stage      String   @db.VarChar(20)
-  values     Json
-  created_at DateTime @db.Timestamptz(6)
-  updated_at DateTime @db.Timestamptz(6)
-
-  @@schema("public")
-}
-
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
 model Volunteers {
   id                         Int                        @id(map: "volunteers_volunteer_pkey") @default(autoincrement())
@@ -321,7 +311,6 @@ model Cities {
   ibge_code  Int
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  msrs       msrs[]
 
   @@map("cities")
   @@schema("public")
@@ -418,53 +407,6 @@ model BusaraHashes {
 
   @@map("busara_hashes")
   @@schema("match")
-}
-
-/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
-model msrs {
-  id                   BigInt   @id(map: "msrs_msrs_pkey") @default(autoincrement())
-  user_zendesk_id      Int?
-  name                 String   @db.VarChar(100)
-  email                String   @db.VarChar(254)
-  cpf                  String   @db.VarChar(11)
-  color                String   @db.VarChar(15)
-  gender               String   @db.VarChar(15)
-  whatsapp             String   @db.VarChar(11)
-  state                String   @db.VarChar(2)
-  city_id              Int
-  neighborhood         String   @db.VarChar(100)
-  latitude             Decimal  @db.Decimal(10, 4)
-  logintude            Decimal  @db.Decimal(10, 4)
-  pcd                  Boolean
-  education            String   @db.VarChar(40)
-  work_situation       String   @db.VarChar(40)
-  income               Decimal  @db.Decimal(10, 2)
-  duration_of_violence String   @db.VarChar(30)
-  author_of_violence   String   @db.VarChar(30)
-  story                String
-  risk_factors         String   @db.VarChar(140)
-  protective_factors   String   @db.VarChar(100)
-  public_service       String   @db.VarChar(100)
-  type_of_support      String   @db.VarChar(20)
-  access               String   @db.VarChar(30)
-  status               String   @db.VarChar(15)
-  support_on_queue     Boolean
-  on_queue             Boolean
-  online               Boolean
-  priority             String   @db.VarChar(15)
-  created_at           DateTime @db.Timestamptz(6)
-  updated_at           DateTime @db.Timestamptz(6)
-  match                Boolean
-  digital_violence     String   @db.VarChar(200)
-  obstetric_violence   String   @db.VarChar(100)
-  physical_violence    String   @db.VarChar(100)
-  property_violence    String   @db.VarChar(100)
-  psych_violence       String   @db.VarChar(100)
-  sexual_violence      String   @db.VarChar(100)
-  cities               Cities   @relation(fields: [city_id], references: [city_id], onDelete: NoAction, onUpdate: NoAction, map: "msrs_msrs_city_id_e49bad88_fk_cities_city_id")
-
-  @@index([city_id], map: "msrs_msrs_city_id_e49bad88")
-  @@schema("public")
 }
 
 model Mutipliers {
