@@ -9,12 +9,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-on:
-  push:
-    branches:
-      - 'main'
-    paths:
-      - 'schema.prisma'
+on: workflow_dispatch
 
 jobs:
   update-schema:
@@ -57,7 +52,7 @@ jobs:
           git add prisma/schema.prisma
           git commit -m "feat: updated schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations/blob/main/schema.prisma"
 
-      - name: Push to main
-        if: env.exiting != 'true'
-        working-directory: ${{ matrix.repositories }}
-        run: git push origin main
+      # - name: Push to main
+      #   if: env.exiting != 'true'
+      #   working-directory: ${{ matrix.repositories }}
+      #   run: git push origin main
