@@ -9,7 +9,22 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/update-schema.yml'
+      - 'schema.prisma'
+
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/update-schema.yml'
+      - 'schema.prisma'
 
 jobs:
   update-schema:
