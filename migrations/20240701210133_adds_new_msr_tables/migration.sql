@@ -56,6 +56,3 @@ ALTER TABLE "pii_sec"."msr_pii" ADD CONSTRAINT "msr_pii_msr_id_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "pii_mask"."msr_pii" ADD CONSTRAINT "msr_pii_msr_id_fkey" FOREIGN KEY ("msr_id") REFERENCES "msr"."MSRs"("msr_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "match"."support_requests" ADD CONSTRAINT "support_requests_msr_id_fkey" FOREIGN KEY ("msr_id") REFERENCES "msr"."MSRs"("msr_id") ON DELETE RESTRICT ON UPDATE CASCADE;

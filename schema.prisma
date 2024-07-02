@@ -238,10 +238,10 @@ model MSRs {
   createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
 
-  SupportRequests SupportRequests[]
   MSRPii          MSRPiiSec?
   MSRPiiMask      MSRPiiMask?
 
+  @@map("msrs")
   @@schema("msr")
 }
 
@@ -294,7 +294,6 @@ model SupportRequests {
   updatedAt                   DateTime                      @updatedAt @map("updated_at") @db.Timestamp(6)
   Matches                     Matches[]
   SupportRequestStatusHistory SupportRequestStatusHistory[]
-  MSRs                        MSRs                          @relation(fields: [msrId], references: [msrId])
 
   @@map("support_requests")
   @@schema("match")
