@@ -224,15 +224,19 @@ model volunteers_formdata {
 }
 
 model MSRs {
-  msrId         BigInt   @id @default(autoincrement()) @map("msr_id")
-  raceColor     String   @map("race_color") @db.VarChar(100)
-  zipcode       String   @db.VarChar(9)
-  neighborhood  String   @db.VarChar(100)
-  city          String   @db.VarChar(100)
-  state         String   @db.VarChar(9)
-  status        MSRStatus
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  msrId                BigInt    @id @default(autoincrement()) @map("msr_id")
+  zendeskUserId        BigInt    @map("zendesk_user_id")
+  gender               Gender
+  raceColor            Race @map("race_color")
+  hasDisability        Boolean?  @map("has_disability")
+  acceptsOnlineSupport Boolean?  @map("accepts_online_support")
+  zipcode              String    @db.VarChar(9)
+  neighborhood         String    @db.VarChar(100)
+  city                 String    @db.VarChar(100)
+  state                String    @db.VarChar(9)
+  status               MSRStatus
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
 
   SupportRequests SupportRequests[]
   MSRPii          MSRPiiSec?
