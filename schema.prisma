@@ -238,7 +238,6 @@ model MSRs {
   updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
 
   MSRPii     MSRPiiSec?
-  MSRPiiMask MSRPiiMask?
 
   @@map("msrs")
   @@schema("msr")
@@ -258,22 +257,6 @@ model MSRPiiSec {
 
   @@map("msr_pii")
   @@schema("pii_sec")
-}
-
-model MSRPiiMask {
-  msrId       BigInt   @id @default(autoincrement()) @map("msr_id")
-  firstName   String   @map("first_name") @db.VarChar(1000)
-  lastName    String   @map("last_name") @db.VarChar(1000)
-  email       String   @db.VarChar(1000)
-  phone       String   @db.VarChar(1000)
-  dateOfBirth DateTime? @map("date_of_birth") @db.Date
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
-
-  MSRs MSRs @relation(fields: [msrId], references: [msrId])
-
-  @@map("msr_pii")
-  @@schema("pii_mask")
 }
 
 model SupportRequests {
