@@ -558,7 +558,7 @@ enum SupportType {
 
 enum MSRStatus {
   registered
-  unsubscribed
+  unregistered
 
   @@map("msr_status")
   @@schema("msr")
