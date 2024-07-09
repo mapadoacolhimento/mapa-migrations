@@ -715,8 +715,12 @@ enum MultiplierHouseholdType {
 }
 
 enum MultiplierJourneyEvent {
-  registration
-  general_onboarding
+  inscricao
+  embarque_geral
+  embarque_regional
+  i_encontro_da_rede
+  i_jornada_formativa
+  ii_jornada_formativa
 
   @@map("multiplier_journey_event")
   @@schema("mobilization")
