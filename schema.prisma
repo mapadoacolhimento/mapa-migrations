@@ -7,7 +7,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["match", "public", "mobilization", "public_services", "msr", "pii_sec", "pii_mask"]
+  schemas  = ["match", "public", "mobilization", "public_services", "msr", "pii_sec"]
 }
 
 model auth_group {
