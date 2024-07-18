@@ -320,7 +320,7 @@ model MatchConfirmations {
   matchConfirmationId Int                     @id @default(autoincrement()) @map("match_confirmation_id")
   supportRequestId    Int                     @map("support_request_id")
   msrId               BigInt                  @map("msr_id")
-  volunteerId         Int?                    @map("volunteer_id")
+  volunteerId         Int                     @map("volunteer_id")
   status              MatchConfirmationStatus
   matchId             Int?                    @map("match_id")
   createdAt           DateTime                @default(now()) @map("created_at") @db.Timestamp(6)
