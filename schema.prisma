@@ -335,8 +335,8 @@ model MatchConfirmations {
   msrId               BigInt                  @map("msr_id")
   volunteerId         Int                     @map("volunteer_id")
   status              MatchConfirmationStatus
-  matchType           MatchType
-  matchStage          MatchStage
+  matchType           MatchType               @map("match_type")
+  matchStage          MatchStage              @map("match_stage")
   matchId             Int?                    @map("match_id")
   createdAt           DateTime                @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt           DateTime                @updatedAt @map("updated_at") @db.Timestamp(6)
