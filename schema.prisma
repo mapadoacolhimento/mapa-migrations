@@ -239,6 +239,7 @@ model MSRs {
 
   MSRPii           MSRPiiSec?
   MSRStatusHistory MSRStatusHistory[]
+  SupportRequests SupportRequests[]
 
   @@map("msrs")
   @@schema("msr")
@@ -291,6 +292,9 @@ model SupportRequests {
   Matches                     Matches[]
   MatchConfirmations          MatchConfirmations[]
   SupportRequestStatusHistory SupportRequestStatusHistory[]
+
+  MSRs MSRs @relation(fields: [msrId], references: [msrId])
+
 
   @@map("support_requests")
   @@schema("match")
