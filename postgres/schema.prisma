@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  previewFeatures = [ "multiSchema"]
   binaryTargets   = ["native", "rhel-openssl-1.0.x"]
 }
 
@@ -322,7 +322,7 @@ model Matches {
   updatedAt                DateTime             @updatedAt @map("updated_at") @db.Timestamp(6)
   MatchStatusHistory       MatchStatusHistory[]
   MatchSurveys             MatchSurveys[]
-  supportRequest           SupportRequests      @relation(fields: [supportRequestId], references: [supportRequestId])
+  supportRequest_o           SupportRequests      @relation(fields: [supportRequestId], references: [supportRequestId])
   volunteer                Volunteers?          @relation(fields: [volunteerId], references: [id])
 
   @@map("matches")
