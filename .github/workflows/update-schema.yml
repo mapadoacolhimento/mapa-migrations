@@ -40,7 +40,7 @@ jobs:
         working-directory: ${{ matrix.repositories }}
         run: |
           rm ./prisma/schema.prisma
-          cp -u ../schema.prisma ./prisma
+          cp -u ../postgres/schema.prisma ./prisma
 
       - name: Check for changes
         working-directory: ${{ matrix.repositories }}
