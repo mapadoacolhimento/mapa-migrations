@@ -11,13 +11,13 @@ on:
     branches:
       - '**'
     paths:
-      - 'migrations/**'
+      - 'postgres/migrations/**'
 
   push:
     branches:
       - 'main'
     paths:
-      - 'migrations/**'
+      - 'postgres/migrations/**'
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
