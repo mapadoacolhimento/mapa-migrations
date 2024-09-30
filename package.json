@@ -12,6 +12,7 @@
     "db:generate": "prisma generate --schema postgres/schema.prisma",
     "db:reset": "prisma migrate reset --schema postgres/schema.prisma && npm run db:seed",
     "db:migrate:diff": "prisma migrate diff",
+    "mongodb:seed": "node mongodb/seed.mjs",
     "mongodb:push": "prisma db push --schema mongodb/schema.prisma",
     "mongodb:deploy": "prisma deploy --schema mongodb/schema.prisma",
     "mongodb:generate": "prisma generate --schema mongodb/schema.prisma"
