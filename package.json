@@ -15,7 +15,8 @@
     "mongodb:seed": "node mongodb/seed.mjs",
     "mongodb:push": "prisma db push --schema mongodb/schema.prisma",
     "mongodb:deploy": "prisma deploy --schema mongodb/schema.prisma",
-    "mongodb:generate": "prisma generate --schema mongodb/schema.prisma"
+    "mongodb:generate": "prisma generate --schema mongodb/schema.prisma",
+    "mongodb:studio": "prisma studio --schema mongodb/schema.prisma"
   },
   "keywords": [],
   "author": "",
