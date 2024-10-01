@@ -9,7 +9,7 @@ datasource db {
   url      = env("MONGO_DB_URL")
 }
 
-model FormData {
+model MsrRegisterData {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   email String
 }
