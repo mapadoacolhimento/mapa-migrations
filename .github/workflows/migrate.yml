@@ -48,3 +48,8 @@ jobs:
         run: npm run migrate:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
+      - name: Push changes to the database monogodb
+        run: npm run mongodb:push
+        env:
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL }}
