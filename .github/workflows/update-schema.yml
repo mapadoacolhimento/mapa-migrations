@@ -16,10 +16,10 @@ on:
     branches:
       - 'main'
     paths:
-      - 'schema.prisma'
+      - 'postgres/schema.prisma'
 
 jobs:
-  update-schema:
+  update-schema-postgres:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -57,7 +57,7 @@ jobs:
           git config user.name "$USERNAME"
           git config user.email "$USERNAME@$ADDRESS_SUFFIX"
           git add prisma/schema.prisma
-          git commit -m "feat: updated schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations/blob/main/schema.prisma"
+          git commit -m "feat: updated schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations/blob/main/postgres/schema.prisma"
 
       - name: Push to main
         if: env.exiting != 'true'
