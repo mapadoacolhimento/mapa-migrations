@@ -16,14 +16,14 @@ on:
     branches:
       - 'main'
     paths:
-      - 'postgres/schema.prisma'
+      - 'mongodb/schema.prisma'
 
 jobs:
-  update-schema-postgres:
+  update-schema-mongodb:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repositories: [lambda-pedido-acolhimento, cadastro-msr, lambda-confirmacao-disponibilidade]
+        repositories: [cadastro-msr]
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v3
@@ -39,8 +39,8 @@ jobs:
       - name: Update schema file
         working-directory: ${{ matrix.repositories }}
         run: |
-          rm ./prisma/schema.prisma
-          cp -u ../postgres/schema.prisma ./prisma
+          rm ./prisma/mongodb/schema.prisma
+          cp -u ../mongodb/schema.prisma ./prisma/mongodb
 
       - name: Check for changes
         working-directory: ${{ matrix.repositories }}
@@ -56,8 +56,8 @@ jobs:
         run: |
           git config user.name "$USERNAME"
           git config user.email "$USERNAME@$ADDRESS_SUFFIX"
-          git add prisma/schema.prisma
-          git commit -m "feat: updated schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations/blob/main/postgres/schema.prisma"
+          git add prisma/mongodb/schema.prisma
+          git commit -m "feat: updated mongodb/schema.prisma file from $THE_SERVER/mapadoacolhimento/mapa-migrations/blob/main/mongodb/schema.prisma"
 
       - name: Push to main
         if: env.exiting != 'true'

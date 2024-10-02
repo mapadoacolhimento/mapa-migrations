@@ -5,24 +5,29 @@
   "main": "index.js",
   "scripts": {
     "db:start": "docker compose up -d",
-    "db:push": "prisma db push",
-    "migrate:deploy": "prisma migrate deploy",
-    "migrate:dev": "prisma migrate dev",
-    "generate": "prisma generate",
-    "db:seed": "node seed.mjs",
-    "db:reset": "prisma migrate reset && npm run db:seed",
-    "migrate:diff": "prisma migrate diff"
+    "db:seed": "node postgres/seed.mjs",
+    "db:push": "prisma db push --schema postgres/schema.prisma",
+    "migrate:deploy": "prisma migrate deploy --schema postgres/schema.prisma",
+    "migrate:dev": "prisma migrate dev --schema postgres/schema.prisma",
+    "db:generate": "prisma generate --schema postgres/schema.prisma",
+    "db:reset": "prisma migrate reset --schema postgres/schema.prisma && npm run db:seed",
+    "db:migrate:diff": "prisma migrate diff",
+    "mongodb:seed": "node mongodb/seed.mjs",
+    "mongodb:push": "prisma db push --schema mongodb/schema.prisma",
+    "mongodb:deploy": "prisma deploy --schema mongodb/schema.prisma",
+    "mongodb:generate": "prisma generate --schema mongodb/schema.prisma",
+    "mongodb:studio": "prisma studio --schema mongodb/schema.prisma"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.16",
-    "prisma": "^5.9.1",
+    "prisma": "^5.15.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.9.1"
+    "@prisma/client": "^5.15.0"
   }
 }

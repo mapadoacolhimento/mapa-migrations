@@ -11,13 +11,13 @@ on:
     branches:
       - '**'
     paths:
-      - 'migrations/**'
+      - 'postgres/migrations/**'
 
   push:
     branches:
       - 'main'
     paths:
-      - 'migrations/**'
+      - 'postgres/migrations/**'
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
@@ -48,3 +48,8 @@ jobs:
         run: npm run migrate:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
+      - name: Push changes to the database monogodb
+        run: npm run mongodb:push
+        env:
+          MONGO_DB_URL: ${{ github.ref == 'refs/heads/main' && secrets.PROD_MONGO_DB_URL || secrets.STG_MONGO_DB_URL }}

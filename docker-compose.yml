@@ -31,11 +31,27 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+   
+  mongo:
+    image: prismagraphql/mongo-single-replica:4.4.3-bionic
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-changeme}
+      INIT_WAIT_SEC: 3
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    networks:
+      - mongo-network
 
 networks:
   postgres:
+    driver: bridge
+  mongo-network:
     driver: bridge
 
 volumes:
   postgres:
   pgadmin:
+  mongo:
