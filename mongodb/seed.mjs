@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma-mongodb/client';
 
 const prisma = new PrismaClient();
 
