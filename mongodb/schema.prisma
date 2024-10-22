@@ -30,7 +30,7 @@ model MsrRegisterData {
   gender               String?
   genderViolence       String?
   violenceLocation     String?
-  externalSupport      String?
+  externalSupport      String[]
   financialNeed        String?
   terms                Boolean?
   zipcode              String?
