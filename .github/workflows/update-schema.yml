@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repositories: [lambda-pedido-acolhimento, cadastro-msr, lambda-confirmacao-disponibilidade]
+        repositories: [lambda-pedido-acolhimento, cadastro-msr, lambda-confirmacao-disponibilidade, boas-vindas-chatbot]
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v3
