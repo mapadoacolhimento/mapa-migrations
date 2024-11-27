@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma-mongodb/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const form = await prisma.formData.create({
+  const form = await prisma.msrRegisterData.create({
     data:{
       email: "email@email.com"
     }
