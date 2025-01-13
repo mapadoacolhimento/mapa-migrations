@@ -42,9 +42,9 @@ jobs:
           if [ -d "./prisma/postgres/" ]; then
             rm ./prisma/postgres/schema.prisma
             cp -u ../postgres/schema.prisma ./prisma/postgres
-          elif [ -d "./packges/ui/prisma" ]; then
-            rm ./packges/ui/prisma/schema.prisma
-            cp -u ../postgres/schema.prisma ./packges/ui/prisma/postgres
+          elif [ -d "./packages/ui/prisma" ]; then
+            rm ./packages/ui/prisma/schema.prisma
+            cp -u ../postgres/schema.prisma ./packages/ui/prisma/postgres
           else
             rm ./prisma/schema.prisma
             cp -u ../postgres/schema.prisma ./prisma
