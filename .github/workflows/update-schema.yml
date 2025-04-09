@@ -66,6 +66,8 @@ jobs:
           git config user.email "$USERNAME@$ADDRESS_SUFFIX"
           if [ -d "./prisma/postgres/" ]; then
             git add prisma/postgres/schema.prisma
+          elif [ -d "./packages/ui/prisma" ]; then
+            git add packages/ui/prisma/schema.prisma
           else
             git add prisma/schema.prisma
           fi
