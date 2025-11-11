@@ -60,4 +60,5 @@ model MsrRegisterData {
   policeReportDifficulty   String[]
   protectiveFactors        String[]
   riskFactors              String[]
+  consentTerms             Boolean?
 }
