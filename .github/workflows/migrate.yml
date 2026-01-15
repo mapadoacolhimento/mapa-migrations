@@ -9,22 +9,22 @@ on:
 
   pull_request:
     branches:
-      - '**'
+      - "**"
     paths:
-      - 'postgres/migrations/**'
+      - "postgres/migrations/**"
 
   push:
     branches:
-      - 'main'
+      - "main"
     paths:
-      - 'postgres/migrations/**'
+      - "postgres/migrations/**"
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
 
 jobs:
   deploy-mapa:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -48,7 +48,7 @@ jobs:
         run: npm run migrate:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      
+
       - name: Push changes to the database monogodb
         run: npm run mongodb:push
         env:
