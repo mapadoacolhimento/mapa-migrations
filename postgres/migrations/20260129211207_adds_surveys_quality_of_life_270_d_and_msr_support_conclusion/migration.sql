@@ -2,12 +2,6 @@
   Warnings:
 
   - Changed the column `legal_action_difficulty` on the `msr_violence_history` table from a scalar field to a list field. If there are non-null values in that column, this step will fail.
-  - Added the required column `emotional_symptoms` to the `survey_quality_of_life_d0` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `physical_symptoms` to the `survey_quality_of_life_d0` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `emotional_symptoms` to the `survey_quality_of_life_d180` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `physical_symptoms` to the `survey_quality_of_life_d180` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `emotional_symptoms` to the `survey_quality_of_life_d90` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `physical_symptoms` to the `survey_quality_of_life_d90` table without a default value. This is not possible if the table is not empty.
 
 */
 -- AlterTable
@@ -31,16 +25,16 @@ USING
   END;
 
 -- AlterTable
-ALTER TABLE "survey"."survey_quality_of_life_d0" ADD COLUMN     "emotional_symptoms" TEXT NOT NULL,
-ADD COLUMN     "physical_symptoms" TEXT NOT NULL;
+ALTER TABLE "survey"."survey_quality_of_life_d0" ADD COLUMN     "emotional_symptoms" TEXT,
+ADD COLUMN     "physical_symptoms" TEXT;
 
 -- AlterTable
-ALTER TABLE "survey"."survey_quality_of_life_d180" ADD COLUMN     "emotional_symptoms" TEXT NOT NULL,
-ADD COLUMN     "physical_symptoms" TEXT NOT NULL;
+ALTER TABLE "survey"."survey_quality_of_life_d180" ADD COLUMN     "emotional_symptoms" TEXT,
+ADD COLUMN     "physical_symptoms" TEXT;
 
 -- AlterTable
-ALTER TABLE "survey"."survey_quality_of_life_d90" ADD COLUMN     "emotional_symptoms" TEXT NOT NULL,
-ADD COLUMN     "physical_symptoms" TEXT NOT NULL;
+ALTER TABLE "survey"."survey_quality_of_life_d90" ADD COLUMN     "emotional_symptoms" TEXT,
+ADD COLUMN     "physical_symptoms" TEXT;
 
 -- CreateTable
 CREATE TABLE "survey"."survey_quality_of_life_d270" (
@@ -50,8 +44,8 @@ CREATE TABLE "survey"."survey_quality_of_life_d270" (
     "security" TEXT NOT NULL,
     "controlling_situations" TEXT NOT NULL,
     "self_esteem" TEXT NOT NULL,
-    "physical_symptoms" TEXT NOT NULL,
-    "emotional_symptoms" TEXT NOT NULL,
+    "physical_symptoms" TEXT,
+    "emotional_symptoms" TEXT,
     "handle_violence_impact" TEXT NOT NULL,
     "created_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
