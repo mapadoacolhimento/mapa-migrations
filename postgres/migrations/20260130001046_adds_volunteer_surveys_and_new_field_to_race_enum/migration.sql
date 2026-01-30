@@ -61,8 +61,20 @@ CREATE TYPE "survey"."suspension_category" AS ENUM ('one_month', 'three_months',
 -- CreateEnum
 CREATE TYPE "survey"."suspension_reason" AS ENUM ('vacation', 'work_or_study', 'maternity', 'health', 'other');
 
--- AlterEnum
-ALTER TYPE "public"."race" ADD VALUE 'prefer_not_to_answer';
+-- AlterEnum (adiciona somente se não existir)
+DO $$ BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_enum 
+        WHERE enumlabel = 'prefer_not_to_answer' 
+        AND enumtypid = (
+            SELECT oid FROM pg_type 
+            WHERE typname = 'race' 
+            AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
+        )
+    ) THEN
+        ALTER TYPE "public"."race" ADD VALUE 'prefer_not_to_answer';
+    END IF;
+END $$;
 
 -- CreateTable
 CREATE TABLE "survey"."legal_support_follow_up_i" (
