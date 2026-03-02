@@ -1108,7 +1108,7 @@ model SupportInterruption {
 
 model MsrInstrumentalRecord {
   msrInstrumentalRecordId Int                @id @default(autoincrement()) @map("msr_instrumental_record_id")
-  matchId                 Int                @map("match_id")
+  matchId                 Int?               @map("match_id")
   msrId                   BigInt             @map("msr_id")
   instrumentalType        InstrumentalType   @map("instrumental_type")
   status                  InstrumentalStatus @default(sent) @map("status")
@@ -1118,7 +1118,7 @@ model MsrInstrumentalRecord {
   createdAt               DateTime           @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt               DateTime           @updatedAt @map("updated_at") @db.Timestamp(6)
 
-  match Matches @relation(fields: [matchId], references: [matchId])
+  match Matches? @relation(fields: [matchId], references: [matchId])
 
   @@map("msr_instrumental_record")
   @@schema("survey")
