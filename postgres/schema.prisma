@@ -1130,6 +1130,7 @@ enum SupportType {
 enum MSRStatus {
   registered
   unregistered
+  registered_by_public_service
 
   @@map("msr_status")
   @@schema("msr")
