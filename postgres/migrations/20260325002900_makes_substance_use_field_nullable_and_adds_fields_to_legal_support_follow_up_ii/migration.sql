@@ -13,10 +13,6 @@ ADD COLUMN     "legal_process_stage_civil" TEXT,
 ADD COLUMN     "legal_process_stage_criminal" TEXT;
 
 -- AlterTable
-ALTER TABLE "survey"."msr_psychological_support_conclusion" DROP COLUMN "has_helped_with_questions",
-ADD COLUMN     "is_strategy_useful" TEXT NOT NULL;
-
--- AlterTable
 ALTER TABLE "survey"."psychological_support_evaluation" DROP COLUMN "has_helped_with_questions";
 
 -- AlterTable
