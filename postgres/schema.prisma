@@ -1090,13 +1090,14 @@ model SupportInterruption {
   matchId                    Int                 @map("match_id")
   hasDifferentDemandInfo     Boolean             @map("has_different_demand_info")
   differentDemandDescription String?             @map("different_demand_description") @db.Text
-  interruptionReason         InterruptionReason  @map("interruption_reason")
+  interruptionReason         String[]            @map("interruption_reason")
   redirectAreaNeeded         RedirectAreaNeeded? @map("redirect_area_needed")
   publicServicesReferral     String[]            @map("public_services_referral")
   stayInProject              Boolean             @map("stay_in_project")
   exitOrSuspend              ExitOrSuspend?      @map("exit_or_suspend")
   suspensionCategory         SuspensionCategory? @map("suspension_category")
   suspensionReason           SuspensionReason?   @map("suspension_reason")
+  exitReason                 String?             @map("exit_reason")
   createdAt                  DateTime            @default(now()) @map("created_at") @db.Timestamp(6)
 
   match Matches @relation(fields: [matchId], references: [matchId])
@@ -1654,23 +1655,6 @@ enum ExtraContactFrequency {
   on_weekends
 
   @@map("extra_contact_frequency")
-  @@schema("survey")
-}
-
-enum InterruptionReason {
-  volunteer_suspension_or_exit
-  msr_not_eligible
-  no_bonding
-  msr_opted_out
-  msr_disappeared
-  conflict_of_interest
-  schedule_incompatibility
-  divergent_legal_area
-  support_outside_project
-  msr_needs_in_person
-  public_service_referral_needed
-
-  @@map("interruption_reason")
   @@schema("survey")
 }
 
