@@ -872,8 +872,8 @@ model LegalSupportFollowUpII {
   violenceAssessment           String                       @map("violence_assessment") @db.Text
   mainDemandCategory           MainDemandCategory           @map("main_demand_category")
   mainDemandDescription        String                       @map("main_demand_description") @db.Text
-  legalProcessStageCriminal    String?                      @map("legal_process_stage_criminal")
-  legalProcessStageCivil       String?                      @map("legal_process_stage_civil")
+  legalProcessStageCriminal    String[]                     @map("legal_process_stage_criminal")
+  legalProcessStageCivil       String[]                     @map("legal_process_stage_civil")
   safetyPlanUsed               SafetyPlanUsed               @map("safety_plan_used")
   safetyPlanDescription        String?                      @map("safety_plan_description") @db.Text
   violenceProcessImpacts       String[]                     @map("violence_process_impacts")
