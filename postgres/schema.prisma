@@ -921,11 +921,11 @@ model VolunteerLegalSupportConclusion {
   mainDemandCategory                 MainDemandCategory           @map("main_demand_category")
   mainDemandDescription              String                       @map("main_demand_description") @db.Text
   safetyPlanUsed                     SafetyPlanUsed               @map("safety_plan_used")
-  jurisdiction                       String                       @map("jurisdiction") @db.Text
-  usedGenderPrecedents               Boolean                      @map("used_gender_precedents")
-  usedHumanRightsArguments           Boolean                      @map("used_human_rights_arguments")
-  psychologicalDocumentUsed          Boolean                      @map("psychological_document_used")
-  caseConductionDetails              String                       @map("case_conduction_details") @db.Text
+  jurisdiction                       String?                      @map("jurisdiction") @db.Text
+  usedGenderPrecedents               Boolean?                     @map("used_gender_precedents")
+  usedHumanRightsArguments           Boolean?                     @map("used_human_rights_arguments")
+  psychologicalDocumentUsed          Boolean?                     @map("psychological_document_used")
+  caseConductionDetails              String?                      @map("case_conduction_details") @db.Text
   violenceProcessImpacts             String[]                     @map("violence_process_impacts")
   legalChallenges                    String?                      @map("legal_challenges") @db.Text
   expectedOutcomeAchieved            String                       @map("expected_outcome_achieved") @db.Text
