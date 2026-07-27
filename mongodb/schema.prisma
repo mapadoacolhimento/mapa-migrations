@@ -61,3 +61,11 @@ model MsrRegisterData {
   protectiveFactors           String[]
   riskFactors                 String[]
 }
+
+model InterestFormRegister {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  firstName   String
+  email       String          @unique
+  state       String
+  supportType SupportType[]
+}
