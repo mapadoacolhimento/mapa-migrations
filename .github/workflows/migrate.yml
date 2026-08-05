@@ -12,12 +12,14 @@ on:
       - "**"
     paths:
       - "postgres/migrations/**"
+      - "mongodb/**" 
 
   push:
     branches:
       - "main"
     paths:
       - "postgres/migrations/**"
+      - "mongodb/**" 
 
 env:
   LOCAL_DATABASE_URL: postgresql://user:password@localhost:5432/mapa
